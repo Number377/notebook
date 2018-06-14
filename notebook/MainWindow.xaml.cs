@@ -22,6 +22,8 @@ namespace notebook
     {
         string filename = "";
 
+        int newcount = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,6 +34,7 @@ namespace notebook
             beginfontSize();
             GdflieName.Text = "Newfile";
             TextArea.Text = "";
+            newcount = 1;
         }
 
         private void Openbtn_Click(object sender, RoutedEventArgs e)
@@ -52,30 +55,53 @@ namespace notebook
                 TextArea.Text = System.IO.File.ReadAllText(filename);
                 GdflieName.Text = dlg.SafeFileName;
             }
+            newcount = 0;
         }
 
         private void Savebtn_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (newcount == 0)
             {
-                System.IO.File.WriteAllText(filename, TextArea.Text);
-                if (GdflieName.Text[GdflieName.Text.Length - 1] == '*')
+                try
                 {
-                    GdflieName.Text = GdflieName.Text.Substring(0, GdflieName.Text.Length - 1);
+                    System.IO.File.WriteAllText(filename, TextArea.Text);
+                    if (GdflieName.Text[GdflieName.Text.Length - 1] == '*')
+                    {
+                        GdflieName.Text = GdflieName.Text.Substring(0, GdflieName.Text.Length - 1);
+                    }
+                    MessageBox.Show("已存檔");
                 }
-                MessageBox.Show("已存檔");
+                catch
+                {
+                    Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+
+                    Nullable<bool> result = dlg.ShowDialog();
+
+                    if (result == true)
+                    {
+                        filename = dlg.FileName;
+
+                        System.IO.File.WriteAllText(dlg.FileName, TextArea.Text);
+                    }
+                }
             }
-            catch
+            else if (newcount == 1)
             {
                 Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-                
+
                 Nullable<bool> result = dlg.ShowDialog();
 
                 if (result == true)
                 {
                     filename = dlg.FileName;
-                    
+
                     System.IO.File.WriteAllText(dlg.FileName, TextArea.Text);
+
+                    newcount = 0;
+                }
+                else
+                {
+                    newcount = 1;
                 }
             }
         }
