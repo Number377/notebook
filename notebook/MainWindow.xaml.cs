@@ -38,7 +38,7 @@ namespace notebook
         {
             beginfontSize();
             // 產生開啟檔案視窗 OpenFileDialog 
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
             // 顯示視窗
             Nullable<bool> result = dlg.ShowDialog();
