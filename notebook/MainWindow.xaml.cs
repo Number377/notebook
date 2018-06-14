@@ -56,23 +56,7 @@ namespace notebook
 
         private void Savebtn_Click(object sender, RoutedEventArgs e)
         {
-            if (GdflieName.Text == "" || GdflieName.Text == "Newfile")
-            {
-                // 產生開啟檔案視窗 SaveFileDialog 
-                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-                //dlg.Filter = "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv";
-                // 顯示視窗
-                Nullable<bool> result = dlg.ShowDialog();
-                // 當按下開啟之後的反應 
-                if (result == true)
-                {
-                    filename = dlg.FileName;
-
-                    // 儲存檔案
-                    System.IO.File.WriteAllText(dlg.FileName, TextArea.Text);
-                }
-            }
-            else
+            try
             {
                 System.IO.File.WriteAllText(filename, TextArea.Text);
                 if (GdflieName.Text[GdflieName.Text.Length - 1] == '*')
@@ -80,6 +64,19 @@ namespace notebook
                     GdflieName.Text = GdflieName.Text.Substring(0, GdflieName.Text.Length - 1);
                 }
                 MessageBox.Show("已存檔");
+            }
+            catch
+            {
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                
+                Nullable<bool> result = dlg.ShowDialog();
+
+                if (result == true)
+                {
+                    filename = dlg.FileName;
+                    
+                    System.IO.File.WriteAllText(dlg.FileName, TextArea.Text);
+                }
             }
         }
 
