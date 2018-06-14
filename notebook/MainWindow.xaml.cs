@@ -65,10 +65,6 @@ namespace notebook
                 try
                 {
                     System.IO.File.WriteAllText(filename, TextArea.Text);
-                    if (GdflieName.Text[GdflieName.Text.Length - 1] == '*')
-                    {
-                        GdflieName.Text = GdflieName.Text.Substring(0, GdflieName.Text.Length - 1);
-                    }
                     MessageBox.Show("已存檔");
                 }
                 catch
